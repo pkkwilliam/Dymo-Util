@@ -9,15 +9,17 @@
 ></script> */
 }
 
-function print(label) {
-  var printerName = "";
-  for (var i = 0; i < printers.length; ++i) {
-    var printer = printers[i];
-    console.log(printer.name);
-    if (printer.printerType == "LabelWriterPrinter") {
-      printerName = printer.name;
-      break;
+export default class DymoPrintingUtil {
+  print(label) {
+    var printerName = "";
+    for (var i = 0; i < printers.length; ++i) {
+      var printer = printers[i];
+      console.log(printer.name);
+      if (printer.printerType == "LabelWriterPrinter") {
+        printerName = printer.name;
+        break;
+      }
     }
+    label.print(printerName);
   }
-  label.print(printerName);
 }
