@@ -18,17 +18,20 @@ function printLabel(labelXml, data) {
   const label = dymo.label.framework.openLabelXml(labelXml);
   const printers = dymo.label.framework.getPrinters();
 
-  var printerName = "";
-  for (var i = 0; i < printers.length; ++i) {
-    var printer = printers[i];
+  let printerName = "";
+  for (let i = 0; i < printers.length; ++i) {
+    let printer = printers[i];
     if (printer.printerType === "LabelWriterPrinter") {
       printerName = printer.name;
       break;
     }
   }
 
-  var labelSet = new dymo.label.framework.LabelSetBuilder();
-  data.forEach(({ key, value }) => labelSet.addRecord().setText(key, value));
+  // record indicate a new label
+  // inside each record, we can setText()...
+  let labelSet = new dymo.label.framework.LabelSetBuilder();
+  let record = labelSet.addRecord();
+  data.forEach(({ key, value }) => record.setText(key, value));
   label.printAndPollStatus(
     printerName,
     null,
