@@ -12,7 +12,7 @@
 /**
  *
  * @param {XML} label
- * @param [{key, value}] data
+ * @param {[{key, value}]} data
  */
 function printLabel(labelXml, data) {
   const label = dymo.label.framework.openLabelXml(labelXml);
