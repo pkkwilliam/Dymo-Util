@@ -21,7 +21,7 @@ function printLabel(labelXml, data) {
   let printerName = "";
   for (let i = 0; i < printers.length; ++i) {
     let printer = printers[i];
-    if (printer.printerType === "LabelWriterPrinter") {
+    if (printer.printerType === "LabelWriterPrinter" && printer.isConnected) {
       printerName = printer.name;
       break;
     }
