@@ -16,7 +16,7 @@
  */
 function getPrinterNames() {
   const printers = dymo.label.framework.getPrinters();
-  const printerNames = printers.map((printer) => {
+  const printerNames = printers.filter((printer) => {
     if (printer.printerType === "LabelWriterPrinter" && printer.isConnected) {
       return printer.name;
     }
