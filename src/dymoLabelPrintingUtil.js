@@ -14,19 +14,22 @@
  * @param {XML} label
  * @param {[{key, value}]} data
  */
-function printLabel(labelXml, data) {
-  const label = dymo.label.framework.openLabelXml(labelXml);
+function getPrinterNames() {
   const printers = dymo.label.framework.getPrinters();
-
-  let printerName = "";
-  for (let i = 0; i < printers.length; ++i) {
-    let printer = printers[i];
+  const printerNames = printers.map((printer) => {
     if (printer.printerType === "LabelWriterPrinter" && printer.isConnected) {
-      printerName = printer.name;
-      break;
+      return printer.name;
     }
-  }
+  });
+  return printerNames;
+}
 
+function printLabel(labelXml, data, printerName = "") {
+  const label = dymo.label.framework.openLabelXml(labelXml);
+  printerName = printerName ? printerName : getPrinterNames()[0];
+  if (!printerName) {
+    return false;
+  }
   // record indicate a new label
   // inside each record, we can setText()...
   let labelSet = new dymo.label.framework.LabelSetBuilder();
@@ -36,8 +39,13 @@ function printLabel(labelXml, data) {
     printerName,
     null,
     labelSet.toString(),
-    (job, jobStatus) => console.log(jobStatus)
+    (job, jobStatus) => {
+      if (jobStatus.status !== 0) {
+        return false;
+      }
+    }
   );
+  return true;
 }
 
 export default printLabel;
