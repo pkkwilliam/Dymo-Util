@@ -14,19 +14,18 @@
  * @param {XML} label
  * @param {[{key, value}]} data
  */
-function getPrinterNames() {
+export function getAvailablePrinterNames() {
   const printers = dymo.label.framework.getPrinters();
-  const printerNames = printers.filter((printer) => {
-    if (printer.printerType === "LabelWriterPrinter" && printer.isConnected) {
-      return printer.name;
-    }
-  });
-  return printerNames;
+  const availablePrinters = printers.filter(
+    (printer) =>
+      printer.printerType === "LabelWriterPrinter" && printer.isConnected
+  );
+  return availablePrinters.map((printer) => printer.name);
 }
 
 function printLabel(labelXml, data, printerName = "") {
   const label = dymo.label.framework.openLabelXml(labelXml);
-  printerName = printerName ? printerName : getPrinterNames()[0];
+  printerName = printerName ? printerName : getAvailablePrinterNames()[0];
   if (!printerName) {
     return false;
   }
